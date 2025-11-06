@@ -73,17 +73,13 @@ class TestOrderCreation:
     @allure.title('Создание заказа с неверным хешем ингредиентов')
     def test_create_order_invalid_ingredients(self, authenticated_user):
         """Создание заказа с невалидными ингредиентами"""
-        # Формируем заголовок с токеном авторизации
+         # Формируем заголовок с токеном авторизации
         auth_header = {'Authorization': authenticated_user['accessToken']}
-        # Используем заведомо невалидные хеши ингредиентов
+         # Используем заведомо невалидные хеши ингредиентов
         payload = {'ingredients': Ingredients.invalid_hashes}
-        
+    
         with allure.step('Создание заказа с невалидными ингредиентами'):
             response = requests.post(f'{Endpoints.base_url}{Endpoints.create_order}', data=payload, headers=auth_header)
-        
-        # Проверяем что вернулась ошибка сервера или валидации
-        assert response.status_code in [500, 400]
-        # Для невалидных ингредиентов проверяем что операция не успешна (если ответ JSON)
-        if response.status_code == 400:
-            assert response.json()['success'] == False
-        # Если сервер вернул HTML ошибку (500) - просто проверяем статус кодpy
+    
+        # "Если в запросе передан невалидный хеш ингредиента, вернется код ответа 500 Internal Server Error"
+        assert response.status_code == 500
