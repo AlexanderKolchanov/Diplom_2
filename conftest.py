@@ -17,8 +17,8 @@ def new_user_data():
         'email': payload['email'],
         'password': payload['password']
     }
-    response = requests.post(f'{Endpoints.base_url}{Endpoints.login}', data=payload_login)
-    requests.delete(f'{Endpoints.base_url}{Endpoints.user_delete}', headers={'Authorization': response.json()['accessToken']})
+    response = requests.post(Endpoints.login, data=payload_login)
+    requests.delete(Endpoints.user_delete, headers={'Authorization': response.json()['accessToken']})
 
 
 @pytest.fixture()
@@ -29,10 +29,10 @@ def authenticated_user():
         user_data = {'email': generate_email(), 'password': generate_password(), 'name': generate_name()}
         
         # Регистрируем пользователя
-        register_response = requests.post(f'{Endpoints.base_url}{Endpoints.register}', data=user_data)
+        register_response = requests.post(Endpoints.register, data=user_data)
         
         # Авторизуемся
-        login_response = requests.post(f'{Endpoints.base_url}{Endpoints.login}', 
+        login_response = requests.post(Endpoints.login, 
                                       data={'email': user_data['email'], 'password': user_data['password']})
         
         # Если авторизация успешна - возвращаем данные
@@ -48,6 +48,6 @@ def authenticated_user():
 @pytest.fixture(scope='session')
 def available_ingredients():
     """Список ID ингредиентов"""
-    response = requests.get(f'{Endpoints.base_url}{Endpoints.ingredients}')
+    response = requests.get(Endpoints.ingredients)
     assert response.status_code == 200, "Failed to get ingredients"
     return [ingredient['_id'] for ingredient in response.json()['data']]

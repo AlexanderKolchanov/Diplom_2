@@ -18,7 +18,7 @@ class TestUserLogin:
         }
         
         with allure.step('Вход с корректными данными'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.login}', data=payload)
+            response = requests.post(Endpoints.login, data=payload)
         
         # Проверяем что авторизация прошла успешно
         assert response.status_code == 200
@@ -45,7 +45,7 @@ class TestUserLogin:
         }
         
         with allure.step('Вход с неверными данными'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.login}', data=payload)
+            response = requests.post(Endpoints.login, data=payload)
         
         # Проверяем что вернулась ошибка авторизации
         assert response.status_code == 401

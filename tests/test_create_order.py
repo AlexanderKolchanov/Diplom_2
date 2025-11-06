@@ -47,7 +47,7 @@ class TestOrderCreation:
         
         with allure.step('Создание заказа без авторизации'):
             # Отправляем запрос без заголовка авторизации
-            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header)
+            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header) # pyright: ignore[reportUndefinedVariable]
         
         # ИСПРАВЛЕНИЕ: API позволяет создавать заказы без авторизации
         assert response.status_code == 200
