@@ -16,7 +16,7 @@ class TestOrderCreation:
         payload = {'ingredients': generate_ingredients_list(3, available_ingredients)}
         
         with allure.step('Создание заказа с авторизацией'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.create_order}', data=payload, headers=auth_header)
+            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header)
         
         # Проверяем что заказ создан успешно
         assert response.status_code == 200
@@ -32,7 +32,7 @@ class TestOrderCreation:
         payload = {'ingredients': generate_ingredients_list(2, available_ingredients)}
         
         with allure.step('Создание заказа с ингредиентами'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.create_order}', data=payload, headers=auth_header)
+            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header)
         
         # Проверяем что заказ создан успешно
         assert response.status_code == 200
@@ -47,7 +47,7 @@ class TestOrderCreation:
         
         with allure.step('Создание заказа без авторизации'):
             # Отправляем запрос без заголовка авторизации
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.create_order}', data=payload)
+            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header)
         
         # ИСПРАВЛЕНИЕ: API позволяет создавать заказы без авторизации
         assert response.status_code == 200
@@ -63,7 +63,7 @@ class TestOrderCreation:
         payload = {'ingredients': []}
         
         with allure.step('Создание заказа без ингредиентов'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.create_order}', data=payload, headers=auth_header)
+            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header)
         
         # Проверяем что вернулась ошибка из-за отсутствия ингредиентов
         assert response.status_code == 400
@@ -79,7 +79,7 @@ class TestOrderCreation:
         payload = {'ingredients': Ingredients.invalid_hashes}
     
         with allure.step('Создание заказа с невалидными ингредиентами'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.create_order}', data=payload, headers=auth_header)
+            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header)
     
         # "Если в запросе передан невалидный хеш ингредиента, вернется код ответа 500 Internal Server Error"
         assert response.status_code == 500

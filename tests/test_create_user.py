@@ -15,7 +15,7 @@ class TestUserRegistration:
         
         with allure.step('Создание пользователя'):
             # Отправляем запрос на регистрацию
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.register}', data=payload)
+            response = requests.post(Endpoints.register, data=payload)
         
         # Проверяем что пользователь создан успешно
         assert response.status_code == 200
@@ -39,7 +39,7 @@ class TestUserRegistration:
         }
         
         with allure.step('Создание уже существующего пользователя'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.register}', data=payload)
+            response = requests.post(Endpoints.register, data=payload)
         
         # Проверяем что вернулась ошибка "пользователь уже существует"
         assert response.status_code == 403
@@ -55,7 +55,7 @@ class TestUserRegistration:
     def test_create_user_missing_field(self, missing_field, payload):
         """Создание пользователя без обязательного поля"""
         with allure.step(f'Создание пользователя без поля {missing_field}'):
-            response = requests.post(f'{Endpoints.base_url}{Endpoints.register}', data=payload)
+            response = requests.post(Endpoints.register, data=payload)
     
         # Проверяем что вернулась ошибка из-за отсутствия обязательного поля
         assert response.status_code == 403

@@ -2,19 +2,20 @@
 class Endpoints:
     # Базовый URL API
     base_url = 'https://stellarburgers.education-services.ru'
+    
     # Регистрация нового пользователя
-    register = '/api/auth/register'
+    register = f'{base_url}/api/auth/register'
     # Авторизация пользователя
-    login = '/api/auth/login'
+    login = f'{base_url}/api/auth/login'
     # Выход из системы
-    logout = '/api/auth/logout'
+    logout = f'{base_url}/api/auth/logout'
     # Обновление токена
-    refresh_token = '/api/auth/token'
+    refresh_token = f'{base_url}/api/auth/token'
     # Удаление пользователя
-    user_delete = '/api/auth/user'
+    user_delete = f'{base_url}/api/auth/user'
     # Создание заказа
-    create_order = '/api/orders'
+    create_order = f'{base_url}/api/orders'
     # Получение заказов пользователя
-    user_orders = '/api/orders'
+    user_orders = f'{base_url}/api/orders'
     # Получение ингредиентов
-    ingredients = '/api/ingredients'  # Добавлен endpoint для ингредиентов
+    ingredients = f'{base_url}/api/ingredients'
