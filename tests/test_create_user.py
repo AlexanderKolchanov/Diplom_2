@@ -47,20 +47,16 @@ class TestUserRegistration:
         
 
     @allure.title('Создание пользователя без указания одного из полей')
-    @pytest.mark.parametrize('missing_field', ['email', 'password', 'name'])
-    def test_create_user_missing_field(self, missing_field):
+    @pytest.mark.parametrize('missing_field,payload', [
+        ('email', {'password': generate_password(), 'name': generate_name()}),
+        ('password', {'email': generate_email(), 'name': generate_name()}),
+        ('name', {'email': generate_email(), 'password': generate_password()}),
+    ])
+    def test_create_user_missing_field(self, missing_field, payload):
         """Создание пользователя без обязательного поля"""
-        # Генерируем данные без одного поля в зависимости от параметра
-        if missing_field == 'email':
-            payload = {'password': generate_password(), 'name': generate_name()}
-        elif missing_field == 'password':
-            payload = {'email': generate_email(), 'name': generate_name()}
-        else:  # missing_field == 'name'
-            payload = {'email': generate_email(), 'password': generate_password()}
-        
         with allure.step(f'Создание пользователя без поля {missing_field}'):
             response = requests.post(f'{Endpoints.base_url}{Endpoints.register}', data=payload)
-        
+    
         # Проверяем что вернулась ошибка из-за отсутствия обязательного поля
         assert response.status_code == 403
         assert response.json() == ExpectedResponses.missing_required_fields
