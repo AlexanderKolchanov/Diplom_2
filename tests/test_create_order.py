@@ -44,11 +44,11 @@ class TestOrderCreation:
         """Создание заказа без авторизации"""
         # Генерируем список из 1 случайного ингредиента
         payload = {'ingredients': generate_ingredients_list(1, available_ingredients)}
-        
+    
         with allure.step('Создание заказа без авторизации'):
-            # Отправляем запрос без заголовка авторизации
-            response = requests.post(Endpoints.create_order, data=payload, headers=auth_header) # pyright: ignore[reportUndefinedVariable]
-        
+        # Отправляем запрос без заголовка авторизации
+           response = requests.post(Endpoints.create_order, data=payload)  # Убрал headers=auth_header
+    
         # ИСПРАВЛЕНИЕ: API позволяет создавать заказы без авторизации
         assert response.status_code == 200
         assert response.json()['success'] == ExpectedResponses.success_true['success']
